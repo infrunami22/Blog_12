@@ -1,0 +1,39 @@
+###check user list
+GET http://localhost:5000/users
+
+### create a new user
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "name":"testuser1",
+    "password":"password"
+}
+
+###
+POST http://localhost:5000/users/login
+Content-Type: application/json
+
+{
+    "name":"user1",
+    "password":"password"
+}
+
+###tests whether the user sees the correct post and if their token is valid
+GET http://localhost:5000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdHVzZXIxIiwiaWF0IjoxNzExOTk1ODY4LCJleHAiOjE3MTE5OTU4ODN9.2RLQYEZ7UedT0a7ZvzA2D0foPKW9Pp2ZgCdAl21oMYY
+#### creates new access tokents
+POST http://localhost:5000/token
+Content-Type: application/json
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdHVzZXIxIiwicGFzc3dvcmQiOiIkMmIkMTAkRGc3aTRNRHp5VlNmYkZpS0xoa1RUT2poLld4T2JUSEdJVURKS21acGNpbXV1N3VRM0hQeGUiLCJpYXQiOjE3MTE5OTU4NDd9.7Gabttd6MpeG9S1fTj1C8XSYbBANdkKwuMKHsaemoWc"
+}
+
+###deletes their refresh tokens
+DELETE http://localhost:5000/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdHVzZXIxIiwicGFzc3dvcmQiOiIkMmIkMTAkRGc3aTRNRHp5VlNmYkZpS0xoa1RUT2poLld4T2JUSEdJVURKS21acGNpbXV1N3VRM0hQeGUiLCJpYXQiOjE3MTE5OTU4NDd9.7Gabttd6MpeG9S1fTj1C8XSYbBANdkKwuMKHsaemoWc"
+}
