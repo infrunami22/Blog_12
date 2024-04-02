@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect,provide } from 'vue'
 import {LoginService} from './services/LoginService'
 import { useRouter, useRoute } from 'vue-router'
 const loginService = new LoginService()
 const router = useRouter()
 let loggedin = ref(false);
+provide (
+   'isLoggedIn' , loggedin
+)
 const emit = defineEmits(['login'])
 watchEffect(() => {
   canSee()
   
 })
 
-const handleChange = (event) => {
-       
-}
+
+
 
 function canSee(){
    if(loginService.checkLogin()){
