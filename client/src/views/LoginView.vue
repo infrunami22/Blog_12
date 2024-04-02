@@ -6,8 +6,8 @@ import { useRouter, useRoute } from 'vue-router'
 import {LoginService} from '../services/LoginService'
 import App from '../App.vue';
 let seen = ref(true);
-let felh = ref('kminchelle')
-let jelszo = ref('0lelplR')
+let felh = ref('user1')
+let jelszo = ref('password')
 const router = useRouter()
 const emit = defineEmits(['login'])
 const isLoggedIn = inject('isLoggedIn',ref(false))
@@ -27,9 +27,9 @@ function belepes() {
 }
 
 async function  authUser()  {
-  const userData = { username: felh.value, password: jelszo.value }
+  const userData = { name: felh.value, password: jelszo.value, role:"user" }
   console.log(userData)
-  const response = await fetch('https://dummyjson.com/auth/login', {
+  const response = await fetch('http://localhost:5000/users/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -38,7 +38,6 @@ async function  authUser()  {
   })
   const content = await response.json();
   console.log(response)
-  image.value = content.image
 
   if(response.status == 200){
       loginService.login(content.token,content.username)
