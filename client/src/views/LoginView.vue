@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect,inject } from 'vue'
 import { defineComponent } from 'vue';
 import { computed } from '@vue/reactivity';
 import { useRouter, useRoute } from 'vue-router'
 import {LoginService} from '../services/LoginService'
+import App from '../App.vue';
 let seen = ref(true);
 let felh = ref('kminchelle')
 let jelszo = ref('0lelplR')
 const router = useRouter()
 const emit = defineEmits(['login'])
+const isLoggedIn = inject('isLoggedIn',ref(false))
 
 const loginService = new LoginService()
 
@@ -19,7 +21,9 @@ let image = ref('')
 
 function belepes() {
   authUser()
-  emit('login')
+
+
+  
 }
 
 async function  authUser()  {
@@ -39,6 +43,7 @@ async function  authUser()  {
   if(response.status == 200){
       loginService.login(content.token,content.username)
       router.push('/')
+      isLoggedIn.value = true
   }
   else{
     error.value = content.message
