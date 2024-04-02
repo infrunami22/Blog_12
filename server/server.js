@@ -13,10 +13,12 @@ const users = [
     {
         name: 'user1',
         password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed password for 'password'
+        role:'user'
     },
     {
         name: 'admin',
         password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed password for 'password'
+        role:'admin'
     }
 ]
 const posts = [
@@ -31,6 +33,7 @@ const posts = [
         
     }
 ]
+// TODO : seperate authentication into seperate server
 
 app.get('/users',(req, res) => {
     res.json(users)
@@ -39,7 +42,7 @@ app.get('/users',(req, res) => {
 app.post('/users',async(req, res) => {
     try{
         const hashedPassword = await bcrypt.hash(req.body.password,10)
-        const user = {name: req.body.name, password: hashedPassword}
+        const user = {name: req.body.name, password: hashedPassword,role:req.body.user}
     users.push(user)
     res.status(201).send()
     } catch {

@@ -1,22 +1,14 @@
 ###check user list
 GET http://localhost:5000/users
 
-### create a new user
-POST http://localhost:5000/users
-Content-Type: application/json
-
-{
-    "name":"testuser1",
-    "password":"password"
-}
-
-###
+### check access token,refresh token
 POST http://localhost:5000/users/login
 Content-Type: application/json
 
 {
     "name":"user1",
-    "password":"password"
+    "password":"password",
+    "role":"user"
 }
 
 ###tests whether the user sees the correct post and if their token is valid
