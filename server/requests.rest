@@ -29,3 +29,6 @@ Content-Type: application/json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdHVzZXIxIiwicGFzc3dvcmQiOiIkMmIkMTAkRGc3aTRNRHp5VlNmYkZpS0xoa1RUT2poLld4T2JUSEdJVURKS21acGNpbXV1N3VRM0hQeGUiLCJpYXQiOjE3MTE5OTU4NDd9.7Gabttd6MpeG9S1fTj1C8XSYbBANdkKwuMKHsaemoWc"
 }
+####testing backend post getter
+GET http://localhost:5000/api/posts
+Content-Type: application/json
