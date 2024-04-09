@@ -28,9 +28,8 @@ function canSee(){
 
 }
 
-function logOut(){
-
-  loginService.logOut();
+async function logOut(){
+  await loginService.logOut();
   canSee();
   router.push('/login')
 }

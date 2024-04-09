@@ -4,10 +4,13 @@ import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 
 import { LoginService } from '@/services/LoginService';
+import PostView from '@/views/PostView.vue';
 
 const routes = [
   { path: '/', name:"Home", component: HomeView },
   { path: '/login', name:'Login', component: LoginView },
+  { path: '/post/:id', name:'post', component: PostView },
+
 ]
 
 const loginService = new LoginService()
