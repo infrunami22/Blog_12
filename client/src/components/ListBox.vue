@@ -1,19 +1,40 @@
 <script setup lang="ts">
-  import ListComponent from './ListComponent.vue';
+  import { ref } from 'vue';
+import ListComponent from './ListComponent.vue';
   const props= defineProps(['topicList'])
+  const type = ref('')
+  let adatok = props.topicList
 
-  const adatok = [
-    {title:"proba1",description:"description1",id:1,typename:"proba1"},
-    {title:"proba2",description:"description2",id:1,typename:"proba2"},
-]
-  
+let filterData = ref(adatok.slice())
+
+  function SortByType(){
+
+    filterData.value = []
+    
+    if (type.value == null || type.value == ''){
+      filterData.value = adatok.slice()
+      return;
+    }
+
+    for(let i=0 ; i<adatok.length ; i++){
+       if(adatok[i].typename.includes(type.value)){
+          filterData.value.push(adatok[i])
+       }
+    }
+
+  }
 </script>
 <template>
-<ListComponent v-for="data in adatok"
+  <div style="background-color: beige; width: 500px">
+    <p>Szűrés</p><input type="text" id="type" name="type" v-model="type" @keyup="SortByType()">
+    <div id="list">
+      <ListComponent v-for="data in filterData"
     :title="data.title"
     :description="data.description"
     :id="data.id"
     :typename="data.typename"
     :key="data.id"
      />
+    </div>
+    </div>
 </template>

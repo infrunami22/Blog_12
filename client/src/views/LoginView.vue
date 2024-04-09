@@ -40,7 +40,7 @@ async function  authUser()  {
   console.log(response)
 
   if(response.status == 200){
-      loginService.login(content.token,content.username)
+      loginService.login(content.accessToken,felh.value)
       router.push('/')
       isLoggedIn.value = true
   }

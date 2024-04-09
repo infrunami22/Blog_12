@@ -5,9 +5,25 @@ export class LoginService {
         localStorage.setItem("token", token)
     }
 
-    logOut(){
+    async logOut(){
+        const userData = {token : this.checkLogin() }
+        console.log(userData)
+        const response = await fetch('http://localhost:5000/logout', {
+        method: 'DELETE',
+        headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData),
+     })
+    console.log(response)
+
+    if(response.status == 204){
         localStorage.removeItem("token")
         localStorage.removeItem("username")
+   }
+   else{
+    console.log(response.statusText)
+   }
         
     }
 
