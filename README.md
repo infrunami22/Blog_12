@@ -1,4 +1,9 @@
 # Blog_12
+Rasztik Dominika - IPDUDQ - Github profil : Domi0819
+Schofhauzer Dávid - DGC75I - Github profil : Xernoxius
+Joó Eszter - OSWRGC - Github profil : infrunami22
+
+
 Beüzemelés:
 
 nodejs + npm telepítése:
