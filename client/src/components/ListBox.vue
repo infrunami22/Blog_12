@@ -28,13 +28,14 @@ let filterData = ref(adatok.slice())
   <div style="background-color: beige; width: 500px">
     <p>Szűrés</p><input type="text" id="type" name="type" v-model="type" @keyup="SortByType()">
     <div id="list">
-      <ListComponent v-for="data in filterData"
+    <ListComponent v-for="data in filterData"
     :title="data.title"
     :description="data.description"
     :id="data.id"
     :typename="data.typename"
     :key="data.id"
      />
+
     </div>
     </div>
 </template>
