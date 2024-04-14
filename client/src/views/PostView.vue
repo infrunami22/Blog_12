@@ -17,6 +17,13 @@ watch(() => route.params.id, (newId, oldId) => {
     <p>Post</p>
     <p>{{ id }}</p>
     </div>
+    <div>
+      <p>Új hozzászólás</p>
+         <div style="background-color: blue; width: 400px;">
+             <textarea  type="textarea" id="comment"></textarea><button id="commentsend">Küld</button>
+         </div>
+    </div>
+    
    
     
 </template>

@@ -1,21 +1,37 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { reactive, ref, toRaw, watchEffect } from 'vue'
 import {LoginService} from '../services/LoginService'
 import ListBox from '@/components/ListBox.vue'
 
 const loginService = new LoginService()
-
-
 let felh = ref(loginService.getUserName())
+let adatok = reactive([])
+const status = ref(false)
 
-let adatok = [
-    {title:"proba1",description:"description1",id:1,typename:"proba1"},
-    {title:"proba2",description:"description2",id:2,typename:"proba2"},
-]
+async function getTopics() {
+  const response = await fetch("http://localhost:5000/api/posts");
+  const topics = await response.json();
+  console.log(topics)
+  if(response.ok){
+    console.log("fasz")
+
+
+    return await topics
+  }else {return []}
+
+}
+getTopics().then(data => {
+  adatok.push(data)
+  status.value = true;
+})
+
+
+
 </script>
 
 <template>
   <h1>Üdvözöljük,{{ felh }}!</h1>
-  <ListBox :topic-list="adatok"/> 
+  <ListBox v-if="status" v-bind:topic-list="toRaw(adatok[0])"/>
+  <p v-else>Loading</p>
     
 </template>

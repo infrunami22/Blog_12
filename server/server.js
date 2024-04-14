@@ -1,12 +1,11 @@
 require ('dotenv').config()
 const express = require('express')
-var cors = require('cors');
 const app = express()
+var cors = require('cors')
 const bcrypt = require('bcrypt')
 
-app.use(cors());
-
 app.use(express.json())
+app.use(cors())
 
 let refreshTokens = []
 
@@ -15,28 +14,30 @@ const jwt = require('jsonwebtoken')
 const users = [
     {
         name: 'user1',
-        password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed password for 'password'
+        password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed version of 'password'
         role:'user'
     },
     {
         name: 'admin',
-        password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed password for 'password'
+        password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed version of 'password'
         role:'admin'
     }
 ]
 const posts = [
     {
-        username : 'user1',
-        title: 'Post 1'
+        title: 'backend post',
+        description:'this is a post from the backend',
+        id:3,
+        typename:"proba3"
 
     }
     ,{
-        username : 'admin',
-        title: 'Post 2'
-        
+        title: 'second backend post',
+        description:'this is another post from the backend',
+        id:4,
+        typename:"proba4"
     }
 ]
-// TODO : seperate authentication into seperate server
 
 app.get('/users',(req, res) => {
     res.json(users)
@@ -108,6 +109,11 @@ app.post('/token',(req,res) => {
     })
 })
 
+app.get('/api/posts', (req, res) => {
+    res.json(posts);
+  });
+
+  
 
 app.listen(5000, () => {
     console.log("listening on port 5000")
