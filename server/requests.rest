@@ -2,24 +2,23 @@
 GET http://localhost:5000/users
 
 ### check access token,refresh token
-POST http://localhost:5000/users/login
+POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "name":"user1",
-    "password":"password",
-    "role":"user"
+    "username":"user1",
+    "password":"password"
 }
 
-###tests whether the user sees the correct post and if their token is valid
-GET http://localhost:5000/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdHVzZXIxIiwiaWF0IjoxNzExOTk1ODY4LCJleHAiOjE3MTE5OTU4ODN9.2RLQYEZ7UedT0a7ZvzA2D0foPKW9Pp2ZgCdAl21oMYY
+###tests whether the user can see the posts and if their token is valid
+GET http://localhost:5000/topics
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE3MTMxMDk0ODcsImV4cCI6MTcxMzExMDM4N30.qOjI3aK5EkYNUqddrkichFDhEUkqYfsG3NIVCUGjzik
 #### creates new access tokents
 POST http://localhost:5000/token
 Content-Type: application/json
 
 {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdHVzZXIxIiwicGFzc3dvcmQiOiIkMmIkMTAkRGc3aTRNRHp5VlNmYkZpS0xoa1RUT2poLld4T2JUSEdJVURKS21acGNpbXV1N3VRM0hQeGUiLCJpYXQiOjE3MTE5OTU4NDd9.7Gabttd6MpeG9S1fTj1C8XSYbBANdkKwuMKHsaemoWc"
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjFhYTgyYTM1OTBiZWU4NTY1YTg2YTUiLCJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsIm5hbWUiOiJKb2huIERvZSIsInBhc3N3b3JkIjoiJDJiJDEwJDR0VEtmVjBBaUs3eVRuT0FkM0YvWk9DLzZvLm1qVEEuSGVkVHpQeXhVMEd0S01sUXg1RFRpIiwiaWF0IjoxNzEzMTAwNzczfQ.laor1YffyIZAfGSOeVVoXJLAmJ414Xt47zY_xwnhv40"
 }
 
 ###deletes their refresh tokens
@@ -29,6 +28,3 @@ Content-Type: application/json
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdHVzZXIxIiwicGFzc3dvcmQiOiIkMmIkMTAkRGc3aTRNRHp5VlNmYkZpS0xoa1RUT2poLld4T2JUSEdJVURKS21acGNpbXV1N3VRM0hQeGUiLCJpYXQiOjE3MTE5OTU4NDd9.7Gabttd6MpeG9S1fTj1C8XSYbBANdkKwuMKHsaemoWc"
 }
-####testing backend post getter
-GET http://localhost:5000/api/posts
-Content-Type: application/json
