@@ -1,49 +1,38 @@
 require ('dotenv').config()
 const express = require('express')
+const cors = require('cors')
 const app = express()
-var cors = require('cors')
-const bcrypt = require('bcrypt')
-
+const userRoute = require('./userRoute')
+const topicRoute = require('./topicRoute')
+/* const authentication = require('./authentication') */
+const tokenRoute = require('./tokenRoute')
 app.use(express.json())
 app.use(cors())
 
-let refreshTokens = []
+app.use('/users',userRoute)
+app.use('/auth',tokenRoute)
+app.use('/topics',topicRoute)
 
-const jwt = require('jsonwebtoken')
 
-const users = [
-    {
-        name: 'user1',
-        password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed version of 'password'
-        role:'user'
-    },
-    {
-        name: 'admin',
-        password: '$2b$10$4tTKfV0AiK7yTnOAd3F/ZOC/6o.mjTA.HedTzPyxU0GtKMlQx5DTi', // Hashed version of 'password'
-        role:'admin'
+
+
+
+/* app.get('/users', async (req,res) => {
+    try {
+        const client = db.getClient();
+        const database = client.db("Blog");
+        const usersCollection = database.collection('users');
+
+        const users = await usersCollection.find({}).toArray();
+
+        res.json(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
-]
-const posts = [
-    {
-        title: 'backend post',
-        description:'this is a post from the backend',
-        id:3,
-        typename:"proba3"
-
-    }
-    ,{
-        title: 'second backend post',
-        description:'this is another post from the backend',
-        id:4,
-        typename:"proba4"
-    }
-]
-
-app.get('/users',(req, res) => {
-    res.json(users)
-})
-
-app.post('/users',async(req, res) => {
+}); */
+//registration - not needed
+/* app.post('/users',async(req, res) => {
     try{
         const hashedPassword = await bcrypt.hash(req.body.password,10)
         const user = {name: req.body.name, password: hashedPassword,role:req.body.user}
@@ -52,68 +41,26 @@ app.post('/users',async(req, res) => {
     } catch {
         res.status(500).send()
     }
-})
+}) */
 
 
-app.get('/posts', authenticateToken,(req,res) => {
-    res.json(posts.filter(post => post.username === req.user.name))
-})
-
-function authenticateToken(req,res,next){
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if(token== null) return res.status(401)
-
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=> {
-        if(err) return res.sendStatus(403)
-        req.user = user
-        next()
-    })
-}
-
-app.delete('/logout',(req,res)=> {
-    refreshTokens = refreshTokens.filter(token => token !==req.body.token)
-    res.sendStatus(204)
-})
-app.post('/users/login',async(req, res) => {
-    const user = users.find(user => user.name === req.body.name)
+/* app.get('/topics', authenticateToken,async(req,res) => {
     try {
-        const match = await bcrypt.compare(req.body.password, user.password)
-        if (match) {
-            // Passwords match, generate tokens
-            const accessToken = generateAccessToken(user)
-            const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-            refreshTokens.push(refreshToken)
-            res.json({ accessToken: accessToken, refreshToken: refreshToken })
-        } else {
-            // Passwords don't match
-            res.status(401).send('Invalid password')
-        }
-    } catch {
-        res.status(500).send()
+        // Connect to the MongoDB server
+        const database = client.db("Blog");
+        const postsCollection = database.collection('topics');
+
+        // Fetch posts belonging to the authenticated user
+        const topics = await postsCollection.find({}).toArray();
+
+        // Send the topics as JSON response
+        res.json(topics);
+    } catch (error) {
+        console.error("Error fetching topics:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
-})
+}) */
 
-function generateAccessToken(user) {
-    return jwt.sign({ name: user.name},process.env.ACCESS_TOKEN_SECRET,{expiresIn: '15s'})
-}
-
-app.post('/token',(req,res) => {
-    const refreshToken = req.body.token
-    if(refreshToken == null) return res.sendStatus(401)
-    if(!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
-    jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,(err,user) => {
-        if(err) return res.sendStatus(403)
-        const accessToken = generateAccessToken({name: user.name})
-        res.json({accessToken: accessToken})
-    })
-})
-
-app.get('/api/posts', (req, res) => {
-    res.json(posts);
-  });
-
-  
 
 app.listen(5000, () => {
     console.log("listening on port 5000")
