@@ -1,0 +1,58 @@
+const express = require('express');
+const router = express.Router();
+const authenticateToken  = require('./tokenRoute');
+const db = require('./db');
+
+router.get('/list', authenticateToken,async(req,res) => {
+    try {
+        // Connect to the MongoDB server
+        const client = db.getClient();
+        const database = client.db("Blog");
+        const postsCollection = database.collection('topics');
+
+        const topics = await postsCollection.find({}).toArray();
+
+        // Fetch type information for each topic
+        const topicsWithType = await Promise.all(
+            topics.map(async (topic) => {
+                const type_id = topic.type_id;
+                const typesCollection = database.collection('topic_types');
+                const type = await typesCollection.findOne({ id: type_id });
+                return { ...topic, type };
+            })
+        );
+
+        res.json(topicsWithType);
+    } catch (error) {
+        console.error("Error fetching topics:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+router.get('/:topicId/', async (req, res) => {
+    try {
+        //string-ben adható csak a query-ben az id, így int-be átkonvertáljuk
+        const { topicId } = req.params;
+        const topicIdInt = parseInt(topicId, 10);
+       // console.log(topicIdInt)
+        
+        // Connect to the MongoDB server
+        const client = db.getClient();
+        const database = client.db("Blog");
+        const topicsCollection = database.collection('topics');
+        const commentsCollection = database.collection('comments');
+        
+        //fetch topic
+        const topic = await topicsCollection.findOne({ id: topicIdInt });
+        //fetch its comments
+        const comments = await commentsCollection.find({ topic_id: topicIdInt }).toArray();
+        //combine them
+        const topicWithComments = { ...topic, comments };
+
+        res.json(topicWithComments);
+    } catch (error) {
+        console.error("Error fetching topic and comments:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+module.exports = router;
