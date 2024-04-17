@@ -32,7 +32,7 @@ router.get('/list', authenticateToken,async(req,res) => {
 //get a topic and its comments
 router.get('/:topicId/', authenticateToken, async (req, res) => {
     try {
-        //string-ben adható csak a query-ben az id, így int-be átkonvertáljuk
+        //the id can only be accessed as a string, so we concert it to int
         const { topicId } = req.params;
         const topicIdInt = parseInt(topicId, 10);
        // console.log(topicIdInt)

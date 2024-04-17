@@ -1,29 +1,33 @@
 ###check user list
-GET http://localhost:5000/users
+GET http://localhost:5000/users/list
 
+###check specific user's comments
+GET http://localhost:5000/users/2/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzEzMzc1NTI5LCJleHAiOjE3MTMzNzY0Mjl9.pCA23F5EOBy4cao_gzJ8tV6F83QvmQU_pSmI6BfbLjM
 ### check access token,refresh token
 POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-    "username":"user1",
+    "username":"Eszu",
     "password":"password"
 }
 
 ###tests whether the user can see the posts and if their token is valid
 GET http://localhost:5000/topics/list
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE3MTMzNzAwNTEsImV4cCI6MTcxMzM3MDk1MX0.03JzExqqiAZVYYwlYkjSXR7dUqI-JckkZP9_1kFVg7k
 
 ### check if you can view a certain topic with its comments
 GET http://localhost:5000/topics/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTMzNzMzNDksImV4cCI6MTcxMzM3NDI0OX0.wF9LtQgsFCtx_4orOQtlIveqM1IHIKcCXf16gSvyzDA
 
 ### ability to add comments to a topic
-POST http://localhost:5000/topics/1/comments
+POST http://localhost:5000/topics/2/comments
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE3MTMzNjgxMjIsImV4cCI6MTcxMzM2OTAyMn0.PCIQvdKYF4bay1FazG9ekyDKWkDcUFhvaHmOybm1vM4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzEzMzc1NTI5LCJleHAiOjE3MTMzNzY0Mjl9.pCA23F5EOBy4cao_gzJ8tV6F83QvmQU_pSmI6BfbLjM
 
 {
-      "content": "This is a new comment to post 1."
+      "content": "This is a new comment to topic 2."
 }
 
 #### creates new access tokents
@@ -31,12 +35,12 @@ POST http://localhost:5000/auth/token
 Content-Type: application/json
 
 {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjFhYTgyYTM1OTBiZWU4NTY1YTg2YTUiLCJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsIm5hbWUiOiJKb2huIERvZSIsInBhc3N3b3JkIjoiJDJiJDEwJDR0VEtmVjBBaUs3eVRuT0FkM0YvWk9DLzZvLm1qVEEuSGVkVHpQeXhVMEd0S01sUXg1RFRpIiwiaWF0IjoxNzEzMjAyMTM4fQ.rTNIqpv-3wysDlOdrVzkmoqfPQUMfaSa63iyV2eIFjU"
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjFiZGFlZGQ1OWQ1ZmJjYTgxNmM5YjYiLCJpZCI6MiwidXNlcm5hbWUiOiJFc3p1IiwibmFtZSI6IkVzenRlciBKb28iLCJwYXNzd29yZCI6IiQyYiQxMCQ0dFRLZlYwQWlLN3lUbk9BZDNGL1pPQy82by5talRBLkhlZFR6UHl4VTBHdEtNbFF4NURUaSIsImlhdCI6MTcxMzM3MzM0Mn0.mdv2RBUrYcMMEIF_nCqWDHx53c91djkDEO7aX1wYvzM"
 }
 ###deletes their refresh token
 DELETE http://localhost:5000/auth/logout
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjFhYTgyYTM1OTBiZWU4NTY1YTg2YTUiLCJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsIm5hbWUiOiJKb2huIERvZSIsInBhc3N3b3JkIjoiJDJiJDEwJDR0VEtmVjBBaUs3eVRuT0FkM0YvWk9DLzZvLm1qVEEuSGVkVHpQeXhVMEd0S01sUXg1RFRpIiwiaWF0IjoxNzEzMjAxOTAwfQ.WPgX5G0gVG5OyKw82-bkU-MajcH94CELyOVqEtYTJk4"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjFiZGFlZGQ1OWQ1ZmJjYTgxNmM5YjYiLCJpZCI6MiwidXNlcm5hbWUiOiJFc3p1IiwibmFtZSI6IkVzenRlciBKb28iLCJwYXNzd29yZCI6IiQyYiQxMCQ0dFRLZlYwQWlLN3lUbk9BZDNGL1pPQy82by5talRBLkhlZFR6UHl4VTBHdEtNbFF4NURUaSIsImlhdCI6MTcxMzM3MzM0Mn0.mdv2RBUrYcMMEIF_nCqWDHx53c91djkDEO7aX1wYvzM"
 }
