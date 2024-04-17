@@ -12,10 +12,19 @@ Content-Type: application/json
 
 ###tests whether the user can see the posts and if their token is valid
 GET http://localhost:5000/topics/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE3MTMyMDIxMTksImV4cCI6MTcxMzIwMzAxOX0.F_YwDuFAM_7fSCRHK2aiLmem36tUqh5UUvTZbb44oLw
+
 
 ### check if you can view a certain topic with its comments
-GET http://localhost:5000/topics/1
+GET http://localhost:5000/topics/2
+
+### ability to add comments to a topic
+POST http://localhost:5000/topics/1/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE3MTMzNjgxMjIsImV4cCI6MTcxMzM2OTAyMn0.PCIQvdKYF4bay1FazG9ekyDKWkDcUFhvaHmOybm1vM4
+
+{
+      "content": "This is a new comment to post 1."
+}
 
 #### creates new access tokents
 POST http://localhost:5000/auth/token
