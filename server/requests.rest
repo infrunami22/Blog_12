@@ -13,7 +13,7 @@ Content-Type: application/json
     "password":"password"
 }
 
-###tests whether the user can see the posts and if their token is valid
+### tests whether the user can see the posts and if their token is valid
 GET http://localhost:5000/topics/list
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE3MTMzNzAwNTEsImV4cCI6MTcxMzM3MDk1MX0.03JzExqqiAZVYYwlYkjSXR7dUqI-JckkZP9_1kFVg7k
 
