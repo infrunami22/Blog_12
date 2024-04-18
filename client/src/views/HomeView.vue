@@ -9,12 +9,10 @@ let adatok = reactive([])
 const status = ref(false)
 
 async function getTopics() {
-  const response = await fetch("http://localhost:5000/api/posts");
+  const response = await fetch("http://localhost:5000/topics/list");
   const topics = await response.json();
   console.log(topics)
   if(response.ok){
-    console.log("fasz")
-
 
     return await topics
   }else {return []}

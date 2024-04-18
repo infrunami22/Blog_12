@@ -9,7 +9,7 @@ import PostView from '@/views/PostView.vue';
 const routes = [
   { path: '/', name:"Home", component: HomeView },
   { path: '/login', name:'Login', component: LoginView },
-  { path: '/post/:id', name:'post', component: PostView },
+  { path: '/topics/:id', name:'topics', component: PostView },
 
 ]
 

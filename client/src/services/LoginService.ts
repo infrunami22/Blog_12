@@ -8,7 +8,7 @@ export class LoginService {
     async logOut(){
         const userData = {token : this.checkLogin() }
         console.log(userData)
-        const response = await fetch('http://localhost:5000/logout', {
+        const response = await fetch('http://localhost:5000/auth/logout', {
         method: 'DELETE',
         headers: {
         'Content-Type': 'application/json'
