@@ -35,4 +35,15 @@ export class LoginService {
         return localStorage.getItem("username")
     }
 
+    header():RequestInit{
+        const headers = {
+            "authorization" : 'Bearer '+this.checkLogin(),
+            'Content-Type': 'application/json'
+         }
+        
+         return {
+            headers
+         }
+    }
+
 }

@@ -35,7 +35,7 @@ router.get('/:topicId/', authenticateToken, async (req, res) => {
         //the id can only be accessed as a string, so we concert it to int
         const { topicId } = req.params;
         const topicIdInt = parseInt(topicId, 10);
-       // console.log(topicIdInt)
+        console.log(topicIdInt)
         
         // Connect to the MongoDB server
         const client = db.getClient();
@@ -43,10 +43,12 @@ router.get('/:topicId/', authenticateToken, async (req, res) => {
         const topicsCollection = database.collection('topics');
         const commentsCollection = database.collection('comments');
         
+        
         //fetch topic
         const topic = await topicsCollection.findOne({ id: topicIdInt });
         //fetch its comments
         const comments = await commentsCollection.find({ topic_id: topicIdInt }).toArray();
+        console.log(comments)
         //combine them
         const topicWithComments = { ...topic, comments };
 
@@ -59,9 +61,10 @@ router.get('/:topicId/', authenticateToken, async (req, res) => {
 //create a new comment to the topic
 router.post('/:topicId/comments', async (req, res) => {
     const { topicId } = req.params;
-    const topicIdInt = parseInt(topicId, 10);
-    const { content } = req.body;
+    const topic_id = parseInt(topicId, 10);
+    const { body } = req.body;
     const token = req.headers.authorization.split(' ')[1];
+    console.log(token)
   
     try {
         // Connect to the MongoDB server
@@ -80,8 +83,8 @@ router.post('/:topicId/comments', async (req, res) => {
         const comment = { 
           id,
           user_id,
-          topicIdInt,
-          content,
+          topic_id,
+          body,
           timestamp: new Date() 
         };
     
