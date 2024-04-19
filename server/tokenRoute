@@ -46,27 +46,32 @@ router.post('/token',(req,res) => {
             console.error("Token verification error:", err);
          return res.sendStatus(403)
         }
-        const accessToken = generateAccessToken({name: user.name})
+        const accessToken = generateAccessToken({name: user.id})
         res.json({accessToken: accessToken})
     })
 })
 
 function authenticateToken(req,res,next){
+    console.log("authenticateToken called")
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-    if(token== null) return res.status(401)
+    if (!token) return res.status(401).json({ error: "Unauthorized: Token is missing" });
 
     jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=> {
-        if(err) return res.sendStatus(403)
+        if(err) return res.status(403).json({error: "Forbidden: invalid token"})
         req.user = user
         next()
     })
 }
 
 
-
 function generateAccessToken(user) {
-    return jwt.sign({ name: user.name},process.env.ACCESS_TOKEN_SECRET,{expiresIn: '15m'})
+    console.log(user)
+    console.log(user.id)
+    return jwt.sign({ id: user.id},process.env.ACCESS_TOKEN_SECRET,{expiresIn: '15m'})
 }
 
-module.exports = router
+module.exports = {
+    router2 : router,
+    authenticateToken : authenticateToken
+}

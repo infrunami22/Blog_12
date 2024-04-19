@@ -1,6 +1,7 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const {router2,authenticateToken} = require('./tokenRoute')
 const router = express.Router();
-const authenticateToken  = require('./tokenRoute');
 const db = require('./db');
 
 router.get('/list', authenticateToken,async(req,res) => {
@@ -28,9 +29,10 @@ router.get('/list', authenticateToken,async(req,res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 })
-router.get('/:topicId/', async (req, res) => {
+//get a topic and its comments
+router.get('/:topicId/', authenticateToken, async (req, res) => {
     try {
-        //string-ben adható csak a query-ben az id, így int-be átkonvertáljuk
+        //the id can only be accessed as a string, so we concert it to int
         const { topicId } = req.params;
         const topicIdInt = parseInt(topicId, 10);
        // console.log(topicIdInt)
@@ -54,5 +56,43 @@ router.get('/:topicId/', async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+//create a new comment to the topic
+router.post('/:topicId/comments', async (req, res) => {
+    const { topicId } = req.params;
+    const topicIdInt = parseInt(topicId, 10);
+    const { content } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+  
+    try {
+        // Connect to the MongoDB server
+        const client = db.getClient();
+        const database = client.db("Blog");
+        const commentsCollection = database.collection('comments')
+        // Verify the JWT token
+        const decoded = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+        const user_id = decoded.id;
+        // Query the database to find the highest existing id within the comments
+        const highestIdComment = await commentsCollection.find().sort({ id: -1 }).limit(1).toArray();
+        let id = 1; 
+        if (highestIdComment.length > 0) {
+          id = highestIdComment[0].id + 1;
+    
+        const comment = { 
+          id,
+          user_id,
+          topicIdInt,
+          content,
+          timestamp: new Date() 
+        };
+    
+        const result = await commentsCollection.insertOne(comment);
+        console.log(result);
+        res.status(201).json('Comment successfully posted.');
+    }
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+  });
 
-module.exports = router;
+
+module.exports = router
