@@ -3,8 +3,7 @@ const router = express.Router();
 const db = require('./db');
 const {router2,authenticateToken} = require('./tokenRoute')
 
-//'/users'
-router.get('/list', async (req,res) => {
+router.get('users/list',authenticateToken, async (req,res) => {
     try {
         const client = db.getClient();
         const database = client.db("Blog");

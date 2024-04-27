@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt')
 const db = require('./db');
 
 let refreshTokens = []
+let admins = [3,4]
+
 
 
 router.delete('/logout',(req,res)=> {
@@ -24,7 +26,7 @@ router.post('/login',async(req, res) => {
         const match = await bcrypt.compare(req.body.password, user.password)
         if (match) {
             // Passwords match, generate tokens
-            const accessToken = generateAccessToken(user)
+            const accessToken = await generateAccessToken(user)
             const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
             refreshTokens.push(refreshToken)
             res.json({ accessToken: accessToken, refreshToken: refreshToken })
@@ -51,27 +53,69 @@ router.post('/token',(req,res) => {
     })
 })
 
-function authenticateToken(req,res,next){
-    console.log("authenticateToken called")
+async function authenticateToken(req,res,next){
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (!token) return res.status(401).json({ error: "Unauthorized: Token is missing" });
-
-    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=> {
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,tokenData)=> {
         if(err) return res.status(403).json({error: "Forbidden: invalid token"})
-        req.user = user
-        next()
-    })
+        const userRole = tokenData.role;
+        req.userRole = userRole;
+        if (userRole == "admin")
+        {
+            next()
+        }  else if (userRole == "user") {
+            // User is a regular user, grant access or deny based on route
+            if (req.originalUrl.startsWith("/admin")) {
+                // User is not authorized to access admin routes
+                return res.status(403).json({ error: "Forbidden: Access denied" });
+            } else {
+                // User is authorized to access non-admin routes
+                next();
+            }
+        } else {
+            // Unknown or unsupported role
+            return res.status(403).json({ error: "Forbidden: Unsupported role" });
+        }
+    });
 }
 
 
-function generateAccessToken(user) {
-    console.log(user)
-    console.log(user.id)
-    return jwt.sign({ id: user.id},process.env.ACCESS_TOKEN_SECRET,{expiresIn: '15m'})
+async function generateAccessToken(user) {
+    const roles = await determineRoles(user)
+    const tokenData = {
+        id: user.id,
+        username: user.username,
+        role: roles
+    };
+    try {
+        const accessToken = jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+        return accessToken;
+    } catch (error) {
+        console.error("Error generating access token:", error);
+        throw error;
+    }
+}
+async function determineRoles(givenuser){
+    const client = db.getClient();
+    const database = client.db("Blog");
+    const usersCollection = database.collection('users');
+    //grab the full user object as the given only contains the id
+    const user = await usersCollection.findOne({id:givenuser.id})
+    
+
+    let roles = [];
+
+    if (admins.includes(givenuser.id)){
+        roles.push("admin");
+    }   else {
+        roles.push("user")
+    }
+    return roles
 }
 
 module.exports = {
     router2 : router,
-    authenticateToken : authenticateToken
+    authenticateToken : authenticateToken,
+    determineRoles : determineRoles
 }

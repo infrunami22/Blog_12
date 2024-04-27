@@ -4,14 +4,15 @@ const cors = require('cors')
 const app = express()
 const userRoute = require('./userRoute')
 const topicRoute = require('./topicRoute')
-/* const authentication = require('./authentication') */
-const {router2,authenticateToken} = require('./tokenRoute')
+const {router2} = require('./tokenRoute')
+const adminRoute = require('./adminRoute')
 app.use(express.json())
 app.use(cors())
 
 app.use('/users',userRoute)
 app.use('/auth',router2)
 app.use('/topics',topicRoute)
+app.use('/admin',adminRoute)
 
 
 app.listen(5000, () => {

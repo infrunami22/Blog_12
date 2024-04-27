@@ -1,21 +1,25 @@
 ###check user list
-GET http://localhost:5000/users/list
+GET http://localhost:5000/admin/users/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE0MjMzNzEyLCJleHAiOjE3MTQyMzQ2MTJ9.wjdQMHKpWMDWRdFuRSz6YbQLxLQMlGT9PbLsK8fCG8Y
 
 ###check specific user's comments
 GET http://localhost:5000/users/2/comments
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzEzMzc1NTI5LCJleHAiOjE3MTMzNzY0Mjl9.pCA23F5EOBy4cao_gzJ8tV6F83QvmQU_pSmI6BfbLjM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE0MjMzNzEyLCJleHAiOjE3MTQyMzQ2MTJ9.wjdQMHKpWMDWRdFuRSz6YbQLxLQMlGT9PbLsK8fCG8Y
+
+
 ### check access token,refresh token
 POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-    "username":"Eszu",
+    "username":"admin",
     "password":"password"
 }
 
 ### tests whether the user can see the posts and if their token is valid
 GET http://localhost:5000/topics/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE3MTMzNzAwNTEsImV4cCI6MTcxMzM3MDk1MX0.03JzExqqiAZVYYwlYkjSXR7dUqI-JckkZP9_1kFVg7k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE0MjMzNzEyLCJleHAiOjE3MTQyMzQ2MTJ9.wjdQMHKpWMDWRdFuRSz6YbQLxLQMlGT9PbLsK8fCG8Y
+
 
 ### check if you can view a certain topic with its comments
 GET http://localhost:5000/topics/2
