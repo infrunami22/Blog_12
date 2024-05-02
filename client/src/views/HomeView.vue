@@ -30,8 +30,9 @@ getTopics().then(data => {
 </script>
 
 <template>
-  <h1>Üdvözöljük,{{ felh }}!</h1>
+  <h1>Üdvözöljük,{{ felh }}!</h1>  
   <ListBox v-if="status" v-bind:topic-list="toRaw(adatok[0])"/>
-  <p v-else>Loading</p>
+  <p v-else>Loading</p><input type="checkbox" id="owncomments">Hozzászóltam
+
     
 </template>

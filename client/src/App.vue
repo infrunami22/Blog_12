@@ -45,14 +45,19 @@ function goToLogin(){
     canSee()
 }
 
+function goToLanding(){
+  router.push('/landing')
+}
+
 </script>
 
 
 <template>
   <nav>
-    <button @click="goToHome()" v-show="loggedin">Go to Home</button>
-    <button @click="goToLogin()" v-show="!loggedin">Go to Login</button>
-    <button @click="logOut()" v-show="loggedin">LogOut</button>
+    <button @click="goToLanding()">LandingPage</button>
+    <button @click="goToHome()" v-show="loggedin">Főoldal</button>
+    <button @click="goToLogin()" v-show="!loggedin">Bejelentkezés</button>
+    <button @click="logOut()" v-show="loggedin">Kijelentkezés</button>
   </nav>
   <main>
     <RouterView />
