@@ -9,13 +9,16 @@ let adatok = reactive([])
 const status = ref(false)
 
 async function getTopics() {
-  const response = await fetch("http://localhost:5000/api/posts");
+  const response = await fetch("http://localhost:5000/topics/list", {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + loginService.checkLogin()
+    }
+  });
   const topics = await response.json();
   console.log(topics)
   if(response.ok){
-    console.log("fasz")
-
-
     return await topics
   }else {return []}
 
@@ -33,6 +36,4 @@ getTopics().then(data => {
   <h1>Üdvözöljük,{{ felh }}!</h1>  
   <ListBox v-if="status" v-bind:topic-list="toRaw(adatok[0])"/>
   <p v-else>Loading</p><input type="checkbox" id="owncomments">Hozzászóltam
-
-    
 </template>
