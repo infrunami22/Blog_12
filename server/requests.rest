@@ -4,8 +4,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hb
 
 ###check specific user's comments
 GET http://localhost:5000/users/2/comments
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE0MjMzNzEyLCJleHAiOjE3MTQyMzQ2MTJ9.wjdQMHKpWMDWRdFuRSz6YbQLxLQMlGT9PbLsK8fCG8Y
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE1MjgyODIzLCJleHAiOjE3MTUyODM3MjN9.OTuD1Gcz-kqaAGU2FHYzCr7q8AyT_zj4ddM-m6E9SHo
 
 ### check access token,refresh token
 POST http://localhost:5000/auth/login
@@ -23,16 +22,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hb
 
 ### check if you can view a certain topic with its comments
 GET http://localhost:5000/topics/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTMzNzMzNDksImV4cCI6MTcxMzM3NDI0OX0.wF9LtQgsFCtx_4orOQtlIveqM1IHIKcCXf16gSvyzDA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE1MjgyNzA3LCJleHAiOjE3MTUyODM2MDd9.0KaEHKeINY32Xf1Bu9x0Mtx8lq7hJdI0qX39nWwGkJ4
 
 ### ability to add comments to a topic
 POST http://localhost:5000/topics/2/comments
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzEzMzc1NTI5LCJleHAiOjE3MTMzNzY0Mjl9.pCA23F5EOBy4cao_gzJ8tV6F83QvmQU_pSmI6BfbLjM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE1MzY5NjQzLCJleHAiOjE3MTUzNzA1NDN9.yj5R6qv5Lg1akWA_ge9rWFAs5JLyFQ6KJN3Zfe_CAf8
 
 {
-      "content": "This is a new comment to topic 2."
+      "content": "testing notification"
 }
+#### subscribe to a topic
+POST http://localhost:5000/topics/2/subscribe
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOlsiYWRtaW4iXSwiaWF0IjoxNzE1MjgzNjQ0LCJleHAiOjE3MTUyODQ1NDR9.iKYl0aUNdql82N3V95LuzIk03idI6HftCx2kl7juuMU
 
 #### creates new access tokents
 POST http://localhost:5000/auth/token

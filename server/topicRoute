@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const {router2,authenticateToken,determineRoles} = require('./tokenRoute')
+const { notifyConnectedUsers } = require('./socketRoute'); 
 const router = express.Router();
 const db = require('./db');
 
@@ -31,7 +32,7 @@ router.get('/list', authenticateToken,async(req,res) => {
 //get a topic and its comments
 router.get('/:topicId/', authenticateToken, async (req, res) => {
     try {
-        //the id can only be accessed as a string, so we concert it to int
+        //the id can only be accessed as a string, so we convert it to int
         const { topicId } = req.params;
         const topicIdInt = parseInt(topicId, 10);
        // console.log(topicIdInt)
@@ -55,8 +56,8 @@ router.get('/:topicId/', authenticateToken, async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
-//create a new comment to the topic
-router.post('/:topicId/comments', async (req, res) => {
+//post a new comment to the topic
+router.post('/:topicId/comments', authenticateToken, async (req, res) => {
     const { topicId } = req.params;
     const topic_id = parseInt(topicId, 10);
     const { content } = req.body;
@@ -86,12 +87,42 @@ router.post('/:topicId/comments', async (req, res) => {
     
         const result = await commentsCollection.insertOne(comment);
         console.log(result);
+        
+        //send a notification to subscribers
+        
+        notifyConnectedUsers(topic_id)
+        console.log("notifyConnectedUsers called in topicRoute")
+
         res.status(201).json('Comment successfully posted.');
     }
       } catch (error) {
         res.status(500).json({ error: error.message });
       }
   });
+//subscribe to a topic
+router.post('/:topicId/subscribe', authenticateToken, async (req, res) => {
+    const { topicId } = req.params;
+    const topic_id = parseInt(topicId, 10);
+    console.log(topic_id);
+    const token = req.headers.authorization.split(' ')[1];
 
-
+    try{ 
+        const client = db.getClient();
+        const database = client.db("Blog");
+        const favTopicsCollection = database.collection('favorite_topics');
+        const decoded = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
+            const user_id = decoded.id;
+            console.log("user_id:",user_id,"topic_id: ",topic_id);
+                    
+            const favtopic={
+                user_id,
+                topic_id
+            }
+            const newElement = await favTopicsCollection.insertOne(favtopic);
+            res.status(201).json(' Successfully subscribed to the topic.');
+            console.log("result: ",newElement);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+}
+  });
 module.exports = router
