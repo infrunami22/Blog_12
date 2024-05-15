@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
 import ListComponent from './ListComponent.vue';
-  const props= defineProps(['topicList'])
+  const props= defineProps(['topicList' , 'showInput'])
   const type = ref('')
   let adatok = props.topicList
 
@@ -17,7 +17,8 @@ let filterData = ref(adatok.slice())
     }
 
     for(let i=0 ; i<adatok.length ; i++){
-       if(adatok[i].typename.includes(type.value)){
+      console.log(adatok[i].type)
+       if(adatok[i].type.name.includes(type.value)){
           filterData.value.push(adatok[i])
        }
     }
@@ -26,13 +27,16 @@ let filterData = ref(adatok.slice())
 </script>
 <template>
   <div style="background-color: beige; width: 500px">
-    <p>Szűrés</p><input type="text" id="type" name="type" v-model="type" @keyup="SortByType()">
+    <div v-show="props.showInput">
+      <p>Szűrés</p><input type="text" id="type" name="type" v-model="type" @keyup="SortByType()">
+    </div>
+
     <div id="list">
     <ListComponent v-for="data in filterData"
     :title="data.title"
     :description="data.description"
     :id="data.id"
-    :typename="data.typename"
+    :typename="data.type.name"
     :key="data.id"
      />
 

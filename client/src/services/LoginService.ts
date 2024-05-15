@@ -18,6 +18,7 @@ export class LoginService {
         localStorage.setItem("username", username)
         localStorage.setItem("token", token)
         localStorage.setItem("role",this.decode(token).role[0])
+        localStorage.setItem("id",this.decode(token).id)
         console.log(token)
     }
 
@@ -68,5 +69,9 @@ export class LoginService {
 
     getRole(): string{ 
         return localStorage.getItem("role") || ""
+    }
+
+    getUserId(): string {
+        return localStorage.getItem("id") || ""
     }
 }

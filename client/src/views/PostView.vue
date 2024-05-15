@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import Vue, { reactive, ref, watch } from 'vue'
+import Vue, { inject, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
 import { LoginService } from '@/services/LoginService';
+
+
 
 const loginService = new LoginService()
 const router = useRouter()
@@ -55,6 +57,15 @@ const headers = loginService.header().headers
   console.log(content)
 }
 
+async function subscribe(){
+  const headers = loginService.header().headers
+  const response = await fetch('http://localhost:5000/topics/'+ id.value + '/subscribe', {
+    method: 'POST',
+    headers,
+  })
+  const content_fromsjon = await response.json();
+  console.log(content_fromsjon)
+}
 
 </script>
 
@@ -83,6 +94,7 @@ const headers = loginService.header().headers
       <p>Új hozzászólás</p>
          <div style="background-color: blue; width: 400px;">
              <textarea  type="textarea" id="commenttext" v-model="commenttext"></textarea><button id="commentsend" @click="sendComment()">Küld</button>
+             <button @click="subscribe()">Feliratkozás</button>
          </div>
     </div>
     
