@@ -11,8 +11,12 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "socket.io-client": "^4.7.5",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-jwt-decode": "^0.1.0",
+    "vue-router": "^4.3.0",
+    "vue-socket.io": "^3.0.10",
+    "ws": "^8.17.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",

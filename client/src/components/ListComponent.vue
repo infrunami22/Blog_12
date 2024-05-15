@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 
 
 function navigateToPost(){
-   router.push({name : 'post' , params : {id : props.id}})
+   router.push({name : 'topics' , params : {id : props.id}})
 
 }
 
